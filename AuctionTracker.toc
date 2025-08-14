@@ -1,0 +1,15 @@
+## Interface: 11200
+## Title: AuctionTracker
+## Notes: Track auction house transactions and correlate with mailbox receipts
+## Author: madsk
+## Version: 1.0.0
+## SavedVariables: AuctionTrackerDB
+## SavedVariablesPerCharacter: AuctionTrackerCharDB
+
+Core.lua
+AuctionHooks.lua
+MailProcessor.lua
+DataManager.lua
+Export.lua
+GUI.lua
+Locale\enUS.lua
