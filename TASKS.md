@@ -11,13 +11,13 @@
 - [x] Create realm/character data structure
 
 ### Auction Capture Tasks
-- [ ] Hook `StartAuction()` function
-- [ ] Capture auction data from `GetAuctionSellItemInfo()`
-- [ ] Parse `CHAT_MSG_SYSTEM` for "Auction created" confirmation
-- [ ] Generate unique auction IDs (timestamp + itemId + random)
-- [ ] Store pending auctions in active table
-- [ ] Handle auction house open/close events
-- [ ] Track deposit costs from UI elements
+- [x] Hook `StartAuction()` function
+- [x] Capture auction data from `GetAuctionSellItemInfo()`
+- [x] Parse `CHAT_MSG_SYSTEM` for "Auction created" confirmation
+- [x] Generate unique auction IDs (timestamp + itemId + random)
+- [x] Store pending auctions in active table
+- [x] Handle auction house open/close events
+- [x] Track deposit costs from UI elements
 
 ### Data Validation
 - [ ] Validate captured item data (nil checks)

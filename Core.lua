@@ -150,13 +150,28 @@ function AuctionTracker:OnPlayerLogin()
     -- Set debug mode from character settings
     self.DEBUG = AuctionTrackerCharDB.settings.debugMode
     
+    -- Initialize auction hooks
+    if self.AuctionHooks then
+        self.AuctionHooks:Initialize()
+    end
+    
     self:Debug("AuctionTracker loaded for %s on %s", self.currentPlayer, self.currentRealm)
 end
 
 -- Auction house opened
 function AuctionTracker:OnAuctionHouseShow()
     self:Debug("Auction House opened")
-    -- TODO: Set up auction house hooks
+    
+    -- Initialize auction hooks if not already done
+    if self.AuctionHooks and not self.AuctionHooks.initialized then
+        self.AuctionHooks:Initialize()
+        self.AuctionHooks.initialized = true
+    end
+    
+    -- Clean up any expired auctions
+    if self.AuctionHooks then
+        self.AuctionHooks:CleanupExpiredAuctions()
+    end
 end
 
 -- Auction house closed
@@ -167,9 +182,32 @@ end
 
 -- System message handler (for "Auction created" messages)
 function AuctionTracker:OnSystemMessage(message)
-    -- TODO: Parse auction creation confirmations
-    if message and string.find(message, "Auction created") then
+    if not message then return end
+    
+    -- Parse auction creation confirmations
+    -- In 1.12, the message might vary by locale, but commonly contains "Auction created"
+    local auctionPatterns = {
+        "Auction created", -- English
+        "auction created", -- case variation
+        "Auction posted",  -- Alternative phrasing
+        "auction posted"   -- case variation
+    }
+    
+    local isAuctionMessage = false
+    for _, pattern in ipairs(auctionPatterns) do
+        if string.find(message, pattern) then
+            isAuctionMessage = true
+            break
+        end
+    end
+    
+    if isAuctionMessage then
         self:Debug("Auction creation detected: %s", message)
+        
+        -- Process the confirmed auction creation
+        if self.AuctionHooks then
+            self.AuctionHooks:OnAuctionCreated(message)
+        end
     end
 end
 
